@@ -36,7 +36,6 @@ use filter_imageopt\local;
  */
 class filter_imagecannon extends moodle_text_filter {
 
-    const REGEXP_IMGSRC = '/<img\s[^\>]*(src=["|\']((?:.*)(pluginfile.php(?:.*)))["|\'])(?:.*)>/isU';
 
     /**
      * @var stdClass - filter config
@@ -117,8 +116,8 @@ class filter_imagecannon extends moodle_text_filter {
         global $CFG;
 
         $html = $match[0];
-        $url = $match[2];
-        $path = $match[3];
+        $url = $match[3];
+        $path = $match[4];
 
         // Don't process images that aren't in this site or don't have a relative path.
         if (stripos($url, $CFG->wwwroot) === false && substr($url, 0, 1) != '/') {
@@ -151,10 +150,8 @@ class filter_imagecannon extends moodle_text_filter {
             return $text;
         }
 
-        $filtered = $text; // We need to return the original value if regex fails!
-
-        $search = self::REGEXP_IMGSRC;
-        $filtered = preg_replace_callback($search, 'self::process_img_tag', $filtered);
+        $search = '/((href|src)=["|\']((?:.*)(pluginfile.php(?:.*)))["|\'])(?:.*)>/isU';
+        $filtered = preg_replace_callback($search, 'self::process_img_tag', $text);
 
         if (empty($filtered)) {
             return $text;
