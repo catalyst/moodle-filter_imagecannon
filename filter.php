@@ -35,7 +35,7 @@ class filter_imagecannon extends moodle_text_filter {
     function filter($text, array $options = array()) {
 
         global $CFG, $DB;
-        // Stuff.
+        // Stuff hhmm.
 
         return $text;
 
