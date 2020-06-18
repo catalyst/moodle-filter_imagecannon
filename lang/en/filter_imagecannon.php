@@ -17,8 +17,7 @@
 /**
  * Image Cannon filter
  *
- * @package    filter
- * @subpackage imagecannon
+ * @package    filter_imagecannon
  * @copyright  Brendan Heywood <brendan@catalyst-au.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

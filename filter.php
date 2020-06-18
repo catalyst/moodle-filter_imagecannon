@@ -17,8 +17,7 @@
 /**
  * Image Cannon filter
  *
- * @package    filter
- * @subpackage imagecannon
+ * @package    filter_imagecannon
  * @copyright  Brendan Heywood <brendan@catalyst-au.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -31,11 +30,10 @@ use filter_imageopt\local;
 /**
  * Image Cannon filter
  *
- * @package    filter
- * @subpackage imagecannon
+ * @copyright  Brendan Heywood <brendan@catalyst-au.net>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class filter_imagecannon extends moodle_text_filter {
-
 
     /**
      * @var stdClass - filter config
@@ -44,6 +42,9 @@ class filter_imagecannon extends moodle_text_filter {
 
     /**
      * Constructor
+     *
+     * @param context $context
+     * @param array $localconfig
      */
     public function __construct(context $context, array $localconfig) {
         global $CFG;
