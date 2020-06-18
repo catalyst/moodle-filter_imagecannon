@@ -1,6 +1,9 @@
+<a href="https://www.catalyst-au.net/"><img align=right alt="Catalyst IT" src="https://cdn.rawgit.com/CatalystIT-AU/moodle-auth_saml2/master/pix/catalyst-logo.svg" width="150"></a>
+
 <a href="https://travis-ci.org/catalyst/moodle-filter_imagecannon">
 <img src="https://travis-ci.org/catalyst/moodle-filter_imagecannon.svg?branch=master">
 </a>
+
 
 
 # moodle-filter_imagecannon
@@ -77,4 +80,4 @@ This plugin was developed by Catalyst IT Australia:
 
 https://www.catalyst-au.net/
 
-<img alt="Catalyst IT" src="https://cdn.rawgit.com/CatalystIT-AU/moodle-auth_saml2/master/pix/catalyst-logo.svg" width="400">
+<a href="https://www.catalyst-au.net/"><img alt="Catalyst IT" src="https://cdn.rawgit.com/CatalystIT-AU/moodle-auth_saml2/master/pix/catalyst-logo.svg" width="400"></a>
