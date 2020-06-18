@@ -25,6 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+use filter_imageopt\image;
+use filter_imageopt\local;
+
 /**
  * Image Cannon filter
  *
@@ -32,13 +35,114 @@ defined('MOODLE_INTERNAL') || die;
  * @subpackage imagecannon
  */
 class filter_imagecannon extends moodle_text_filter {
-    function filter($text, array $options = array()) {
 
+    const REGEXP_IMGSRC = '/<img\s[^\>]*(src=["|\']((?:.*)(pluginfile.php(?:.*)))["|\'])(?:.*)>/isU';
+
+    /**
+     * Given a plugin url find its canonical verion
+     *
+     * This will be cached.
+     * @param string $path
+     * @return false|string canonical url
+     */
+    private function get_canonical_url(string $path) {
+        global $DB;
+
+        $parts = explode('/', $path);
+        $component = $parts[2];
+        $filearea = $parts[3];
+
+        if ($component != 'mod_label'
+            && $component != '') {
+            return false;
+        }
+
+        // Reach into imageopt filter to find the orig stored_file.
+        $origfile = local::get_img_file($path);
+        if (!$origfile) {
+            return false;
+        }
+
+        // How many copies of this file are there in the File API?
+        $hash = $origfile->get_contenthash();
+        $count = $DB->count_records('files', ['contenthash' => $hash]);
+
+        // TODO turn into setting.
+        if ($count < 5) {
+            return false;
+        }
+
+        $path = '/' . context_system::instance()->id . '/filter_imagecannon/public/1/' . $hash;
+        $canonurl = moodle_url::make_file_url('/pluginfile.php', $path);
+
+        $fs = get_file_storage();
+
+        if (!$canonfile = $fs->get_file_by_hash(sha1($path))) {
+            $new = new stdClass;
+            $new->contextid = context_system::instance()->id;
+            $new->component = 'filter_imagecannon';
+            $new->filearea = 'public';
+            $new->filepath = '/';
+            $new->filename = $hash;
+            $new->itemid = 1;
+            $canonfile = $fs->create_file_from_storedfile($new, $origfile);
+        }
+        return $canonurl;
+    }
+
+    /**
+     * Process a single image tag regex match
+     *
+     * @param array $match
+     * @return string html
+     */
+    private function process_img_tag(array $match) {
+        global $CFG;
+
+        $html = $match[0];
+        $url = $match[2];
+        $path = $match[3];
+
+        // Don't process images that aren't in this site or don't have a relative path.
+        if (stripos($url, $CFG->wwwroot) === false && substr($url, 0, 1) != '/') {
+            return $html;
+        }
+
+        // TODO filearea based filter.
+
+        $canonurl = $this->get_canonical_url($path);
+
+        if ($canonurl === false) {
+            return $html;
+        }
+
+        $html = str_replace($url, $canonurl, $html);
+        return $html;
+    }
+
+    /**
+     * Filter content.
+     *
+     * @param string $text HTML to be processed.
+     * @param array $options
+     * @return string String containing processed HTML.
+     */
+    public function filter($text, array $options = array()) {
         global $CFG, $DB;
-        // Stuff hhmm argrggg.
 
-        return $text;
+        if (strpos($text, 'pluginfile.php') === false) {
+            return $text;
+        }
 
+        $filtered = $text; // We need to return the original value if regex fails!
+
+        $search = self::REGEXP_IMGSRC;
+        $filtered = preg_replace_callback($search, 'self::process_img_tag', $filtered);
+
+        if (empty($filtered)) {
+            return $text;
+        }
+        return $filtered;
     }
 }
 

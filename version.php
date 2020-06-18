@@ -27,4 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2020061800;           // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2017051509;           // Requires PHP 7, 2017051509 = T12. M3.3
-$plugin->component = 'filter_imagecannon'; // Full name of the plugin (used for diagnostics)
+$plugin->component = 'filter_imagecannon'; // Full name of the plugin (used for diagnostics).
+$plugin->dependencies = [
+    'filter_imageopt' => 2018062800,
+];
