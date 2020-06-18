@@ -9,6 +9,8 @@
 
 * [What is this?](#what-is-this)
 * [Branches](#branches)
+* [Installation](#installation)
+* [Configuration](#configuration)
 * [Support](#support)
 * [Warm thanks](#warm-thanks)
 
@@ -21,18 +23,52 @@ This is a Moodle filter that looks for copies of the same image which have been 
 
 So blast away those pesky duplicates!
 
+Branches
+--------
+
+| Moodle verion      | Branch      | PHP  |
+| -----------------  | ----------- | ---- |
+| Moodle 3.5 to 3.9+ | master      | 7.0+ |
+| Totara 12+         | master      | 7.0+ |
+
+Installation
+------------
+
+1. Install the plugin the same as any standard moodle plugin either via the
+Moodle plugin directory, or you can use git to clone it into your source:
+
+   ```sh
+   git clone git@github.com:catalyst/moodle-filter_imagecannon.git filter/imagecannon
+   ```
+
+   Or install via the Moodle plugin directory:
+    
+   https://moodle.org/plugins/moodle-filter_imagecannon (TBA)
+
+
+Configuration
+-------------
+
+The filter only has a couple simple options:
+
+* Duplicity - how many times should a file be duplicated in the File API for it to be
+  considered a public image and for the filter to take effect
+
+* File areas - Not all file areas are supported by this filter
+
 
 Support
 -------
 
 If you have issues please log them in github here
 
-https://github.com/catalyst/moodle-auth_saml2/issues
+https://github.com/catalyst/moodle-filter_imagecannon/issues
 
 Please note our time is limited, so if you need urgent support or want to
 sponsor a new feature then please contact Catalyst IT Australia:
 
 https://www.catalyst-au.net/contact-us
+
 
 Warm thanks
 -----------
