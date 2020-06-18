@@ -23,7 +23,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['filtername'] = 'Image cannon';
-$string['minduplicates'] = 'Minimum duplicates';
-$string['minduplicatesdesc'] = 'This is the minimum number of duplicates needed before a file is considered to be effectively public.';
-$string['privacy:metadata'] = 'The image cannon filter does not store any personal data.';
+
+defined('MOODLE_INTERNAL') || die;
+
+
+use filter_imageopt\image;
+
+if ($ADMIN->fulltree) {
+
+    $settings->add(new admin_setting_configtext('filter_imagecannon/minduplicates',
+        get_string('minduplicates', 'filter_imagecannon'),
+        get_string('minduplicatesdesc', 'filter_imagecannon'), 20));
+
+}

@@ -39,6 +39,24 @@ class filter_imagecannon extends moodle_text_filter {
     const REGEXP_IMGSRC = '/<img\s[^\>]*(src=["|\']((?:.*)(pluginfile.php(?:.*)))["|\'])(?:.*)>/isU';
 
     /**
+     * @var stdClass - filter config
+     */
+    private $config;
+
+    /**
+     * Constructor
+     */
+    public function __construct(context $context, array $localconfig) {
+        global $CFG;
+        $this->config = get_config('filter_imagecannon');
+        if (!isset($this->config->minduplicates)) {
+            $this->config->minduplicates = 10;
+        }
+
+        parent::__construct($context, $localconfig);
+    }
+
+    /**
      * Given a plugin url find its canonical verion
      *
      * This will be cached.
@@ -57,9 +75,8 @@ class filter_imagecannon extends moodle_text_filter {
             return false;
         }
 
-        // Reach into imageopt filter to find the orig stored_file.
-        $origfile = local::get_img_file($path);
-        if (!$origfile) {
+        // Reach into imageopt filter to find the original stored_file.
+        if (!$origfile = local::get_img_file($path)) {
             return false;
         }
 
@@ -68,7 +85,7 @@ class filter_imagecannon extends moodle_text_filter {
         $count = $DB->count_records('files', ['contenthash' => $hash]);
 
         // TODO turn into setting.
-        if ($count < 5) {
+        if ($count < $this->config->minduplicates) {
             return false;
         }
 
