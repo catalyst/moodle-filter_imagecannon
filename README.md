@@ -4,11 +4,9 @@
 <img src="https://travis-ci.org/catalyst/moodle-filter_imagecannon.svg?branch=master">
 </a>
 
-
-
 # moodle-filter_imagecannon
 
-![image](https://user-images.githubusercontent.com/187449/84968362-a401ab80-b159-11ea-8b03-f708a323bc19.png)
+<img align=right width=400 src="https://user-images.githubusercontent.com/187449/84968362-a401ab80-b159-11ea-8b03-f708a323bc19.png" >
 
 * [What is this?](#what-is-this)
 * [Branches](#branches)
